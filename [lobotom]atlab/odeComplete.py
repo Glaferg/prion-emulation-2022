@@ -25,11 +25,19 @@ def eulerApprox(y0, t0, tF, step = 1000):
 
 
 def runKutApprox(y0, t0, tF, step=1000):
-  def diffEq(x, y, deltaT=1):
+  def diffEq(RNA, y, deltaT=1):
     '''
-    This is where you want to put the expression you want to find an Euler approximation for (e.g. dy/dx = y)
+    This is where you want to put the expression you want to find a Runke-Kutta approximation for (e.g. dy/dx = y)
     '''
-    return y + y*deltaT #For dy/dx = y. You can change this
+    DNA = 1
+    k_tx = 3
+    d_rna = 0.2 
+    k_tr = 3
+    d_prot = 0.01
+
+    RNA_t = k_tx * DNA - (d_rna * RNA)
+    PROT = k_tr * RNA_t - (d_prot * PROT) #For dy/dx = y. You can change this
+    return PROT
   life = tF - t0
   deltaT = life/step
   ts = np.linspace(t0, tF, step)
@@ -41,7 +49,7 @@ def runKutApprox(y0, t0, tF, step=1000):
       k_3 = diffEq(ts[i] + (deltaT/2), ys[i] + deltaT*(k_2/2))
       k_4 = diffEq(ts[i] + deltaT, ys[i] + deltaT*k_3)
 
-      ys.append(ys[i]+ 1/6 * (k_1 + 2*k_2 + 2*k_3 + k_4) * deltaT) 
+      ys.append(ys[i] + 1/6 * (k_1 + 2*k_2 + 2*k_3 + k_4) * deltaT) 
   ys = np.array(ys)
   return (ts, ys)
 
